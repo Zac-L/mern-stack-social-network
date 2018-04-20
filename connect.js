@@ -1,10 +1,11 @@
 /* eslint no-console: "off" */
+require('dotenv').config();
 const mongoose = require('mongoose');
 const bluebird = require('bluebird');
 
 mongoose.Promise = bluebird;
 
-const defaultUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/devsocialnetwork';
+const defaultUri = process.env.MONGODB_URI || process.env.MONGODB_LOCAL_HOST;
 
 
 function connect(dbUri = defaultUri) {
