@@ -1,7 +1,9 @@
+require('dotenv').config();
 const express = require('express');
 const router = express.Router();
 const gravatar = require('gravatar');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 const User = require('../../models/User');
 
@@ -55,7 +57,16 @@ router
         bcrypt.compare(password, user.password)
           .then(isMatch => {
             if(isMatch) {
-              res.json({ msg: 'Success' });
+              // User Matched
+              const payload = { id: user._id, name: user.name, avatar: user.avatar };
+
+              // Signed Token
+              jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: 3600 }, (err, token) => {
+                res.json({
+                  success: true,
+                  token: 'Bearer ' + token
+                });
+              });
             }
             else{
               return res.status(400).json({ password: 'Password incorrect' });
