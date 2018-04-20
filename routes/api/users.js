@@ -17,7 +17,7 @@ router
         if(user) {
           return res.status(400).json({ email: 'Email already exists' });
         } 
-        else{
+        else {
           const avatar = gravatar.url(req.body.email, {
             size: '200',
             rating: 'pg',
@@ -69,7 +69,7 @@ router
                 });
               });
             }
-            else{
+            else {
               return res.status(400).json({ password: 'Password incorrect' });
             }
           });
