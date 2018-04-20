@@ -4,6 +4,7 @@ const router = express.Router();
 const gravatar = require('gravatar');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const passport = require('passport');
 
 const User = require('../../models/User');
 
@@ -58,7 +59,7 @@ router
           .then(isMatch => {
             if(isMatch) {
               // User Matched
-              const payload = { id: user._id, name: user.name, avatar: user.avatar };
+              const payload = { _id: user._id, name: user.name, avatar: user.avatar };
 
               // Signed Token
               jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: 3600 }, (err, token) => {
@@ -73,6 +74,14 @@ router
             }
           });
       });
+  })
+
+  .get('/current', passport.authenticate('jwt', { session: false }), (req, res) => {
+    res.json({
+      _id: req.user._id,
+      name: req.user.name,
+      email: req.user.email
+    });
   });
 
 module.exports = router;
