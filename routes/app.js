@@ -1,5 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
+const passport = require('passport');
 const app = express();
 // const bodyParser = require('body-parser');
 
@@ -9,6 +10,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(morgan('dev'));
 app.use(express.json());
+
+// ### Passport middleware ### //
+app.use(passport.initialize());
+
+// ### Passport config ### //
+require('../passport')(passport);
 
 
 // ### Required routes ### //
