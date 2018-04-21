@@ -8,6 +8,7 @@ const passport = require('passport');
 
 // Input Validation
 const validateRegisterInput = require('../../validation/register');
+const validateLoginInput = require('../../validation/login');
 
 // User Model
 const User = require('../../models/User');
@@ -59,13 +60,22 @@ router
   })
 
   .post('/login', (req, res) => {
+    const { errors, isValid } = validateLoginInput(req.body);
+
+    // Validation check
+    if(!isValid) {
+      return res.status(400).json(errors);
+    }
+
     const email = req.body.email;
     const password = req.body.password;
 
     User.findOne({ email })
       .then(user => {
         if(!user) {
-          return res.status(404).json({ email: 'User not found' });
+          errors.email = 'User not found';
+
+          return res.status(404).json(errors);
         }
 
         bcrypt.compare(password, user.password)
@@ -83,7 +93,9 @@ router
               });
             }
             else {
-              return res.status(400).json({ password: 'Password incorrect' });
+              errors.password = 'Password incorrect';
+
+              return res.status(400).json(errors);
             }
           });
       });
