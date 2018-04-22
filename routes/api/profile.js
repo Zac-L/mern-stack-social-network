@@ -31,7 +31,7 @@ router
   .post('/', passport.authenticate('jwt', { session: false }), (req, res, next) => {
     const { errors, isValid } = validateProfileInput(req.body);
     if(!isValid) {
-      return res.status(400).json(errors)
+      return res.status(400).json(errors);
     }
 
     const profileFields = {};

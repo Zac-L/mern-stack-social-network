@@ -4,6 +4,9 @@
   "description": "",
   "main": "server.js",
   "scripts": {
+    "lint": "eslint **/*.js --ignore-pattern node_modules/",
+    "pretest": "npm run lint -s",
+    "start": "node server.js",
     "start:watch": "nodemon server.js"
   },
   "author": "",
