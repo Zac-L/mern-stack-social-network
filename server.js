@@ -1,5 +1,5 @@
 const http = require('http');
-const connect = require('./connect');
+const connect = require('./utils/connect');
 const app = require('./routes/app');
 
 connect();
