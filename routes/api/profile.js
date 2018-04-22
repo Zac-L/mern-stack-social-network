@@ -89,6 +89,38 @@ router
             });
         }
       }).catch(next);
+  })
+
+  .get('/handle/:handle', (req, res, next) => {
+    const errors = {};
+
+    Profile.findOne({ handle: req.params.handle })
+      .populate('user', ['name', 'avatar'])
+      .then(profile => {
+        if(!profile) {
+          errors.noprofile = 'There is no profile for this user';
+
+          res.status(400).json(errors);
+        }
+        res.json(profile);
+      })
+      .catch(next);
+  })
+
+  .get('/user/:user_id', (req, res, next) => {
+    const errors = {};
+    
+    Profile.findOne({ user: req.params.user_id })
+      .populate('user', ['name', 'avatar'])
+      .then(profile => {
+        if(!profile) {
+          errors.noprofile = 'There is no profile for this user';
+
+          res.status(400).json(errors);
+        }
+        res.json(profile);
+      })
+      .catch(next);
   });
 
 module.exports = router;
