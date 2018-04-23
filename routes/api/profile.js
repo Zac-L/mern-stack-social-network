@@ -121,6 +121,23 @@ router
         res.json(profile);
       })
       .catch(next);
+  })
+
+  .get('/all', (req, res, next) => {
+    const errors = {};
+
+    Profile.find()
+      .populate('user', ['name', 'avatar'])
+      .then(profiles => {
+        if(!profiles) {
+          errors.noprofile = 'There are no profiles';
+
+          return res.status(404).json(errors);
+        }
+
+        res.json(profiles);
+      })
+      .catch(next);
   });
 
 module.exports = router;
