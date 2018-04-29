@@ -186,7 +186,7 @@ router
           description: req.body.description
         };
 
-        // Add to experience array
+        // Add to education array
         profile.education.unshift(newEdu);
         profile.save()
           .then(profile => res.json(profile));
